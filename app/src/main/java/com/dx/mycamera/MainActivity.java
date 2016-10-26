@@ -38,6 +38,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         cameraview = (CameraSurfaceView) findViewById(R.id.cameraview);
         transform = (ImageView) findViewById(R.id.transform);
+        Toast.makeText(MainActivity.this,"请按音量下键拍照",Toast.LENGTH_LONG).show();
         transform.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,7 +53,6 @@ public class MainActivity extends Activity {
             case KeyEvent.KEYCODE_VOLUME_DOWN:
                 cameraview.takePhoto();
                 return true;
-
         }
         return super.onKeyDown(keyCode, event);
     }
