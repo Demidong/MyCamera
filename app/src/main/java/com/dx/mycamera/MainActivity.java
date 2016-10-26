@@ -10,10 +10,13 @@ import android.media.AudioManager;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.view.menu.ActionMenuItemView;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.BufferedOutputStream;
@@ -22,7 +25,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class MainActivity extends Activity {
-    private CameraSurfaceView cameraview ;
+    private CameraSurfaceView cameraview;
+    private ImageView transform;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,17 +37,24 @@ public class MainActivity extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         cameraview = (CameraSurfaceView) findViewById(R.id.cameraview);
+        transform = (ImageView) findViewById(R.id.transform);
+        transform.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cameraview.switchCameraWay();
+            }
+        });
     }
 
     @Override
-    public boolean onKeyDown (int keyCode, KeyEvent event) {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_VOLUME_DOWN:
                 cameraview.takePhoto();
                 return true;
 
         }
-        return super.onKeyDown (keyCode, event);
+        return super.onKeyDown(keyCode, event);
     }
 
 }

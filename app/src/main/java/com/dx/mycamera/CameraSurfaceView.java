@@ -32,7 +32,7 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
     private Context mContext;
     private SurfaceHolder holder;
     private Camera mCamera;
-
+    private boolean isFrontCamera = false;
 
     private int mScreenWidth;
     private int mScreenHeight;
@@ -66,15 +66,11 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
         holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);//设置类型
     }
 
-    public Camera getmCamera() {
-        return  mCamera ;
-    }
-
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         Log.i(TAG, "surfaceCreated");
         if (mCamera == null) {
-            mCamera = Camera.open(1);//开启相机
+            mCamera = Camera.open();//开启相机
 
             try {
                 mCamera.setPreviewDisplay(holder);//摄像头画面显示在Surface上
@@ -237,4 +233,23 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
 
         }
     };
+    public void switchCameraWay(){
+        mCamera.stopPreview();
+        mCamera.release();
+        mCamera = null;
+        if(isFrontCamera){
+           mCamera= Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK );
+            isFrontCamera = false ;
+        }else{
+            mCamera = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT );
+            isFrontCamera = true ;
+        }
+        try {
+            mCamera.setPreviewDisplay(holder);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        setCameraParams(mScreenWidth,mScreenHeight);
+        mCamera.startPreview();
+    }
 }
